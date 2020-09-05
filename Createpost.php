@@ -17,14 +17,16 @@
                 include("Config/connect.php");
 
                 try{
-                    $query = "INSERT INTO blogtable (Title, Body) VALUES (:title, :body)";
+                    $query = "INSERT INTO blogtable (Title, Body, TimeCreated) VALUES (:title, :body, :timeCreated)";
                     $stmt = $conn->prepare($query);
 
                     $title = $_POST["title"];
                     $body = $_POST["body"];
+                    $date = date("Y-m-d H:i:s");
 
                     $stmt->bindParam(':title', $title);
                     $stmt->bindParam(':body', $body);
+                    $stmt->bindParam(':timeCreated', $date);
                     
                     if($stmt->execute()){
                         echo"<div>Record save</div>";
