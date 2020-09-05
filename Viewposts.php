@@ -33,13 +33,13 @@
                                         echo "<td>{$Id}</td>";
                                         echo "<td>{$Title}</td>";
                                         echo "<td>{$TimeCreated}</td>";
-                                        echo "<td><button><a href='read.php?Id={$Id}'>READ</a></button> <button><a href='update.php?Id={$Id}'>UPDATE</a></button> <button><a>DELETE</a></button></td>";
+                                        echo "<td><button><a href='read.php?Id={$Id}'>READ</a></button> <button><a href='update.php?Id={$Id}'>UPDATE</a></button> <button><a href='delete.php?Id={$Id}'>DELETE</a></button></td>";
                                     echo "</tr>";
                                 }
                               echo"</table>";
                   } 
                 else{
-                  "<div>NO DATA AVAILABLE</div>";
+                  echo"<div>NO DATA AVAILABLE</div>";
                 }
             }    
             catch(PDOException $e){
