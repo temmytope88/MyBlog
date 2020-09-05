@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
 <body>
-    <div><h1>UPDATE POST</h1></div>
+    
    <?php
         
-       if(isset($_GET["Id"]) &&  isset($_POST["body"])){
+       if(isset($_GET["Id"]) &&  isset($_POST["body"]) && isset($_POST["title"])){
                      
                          include("Config/connect.php");
 
                       try{
-                          $id = $_GET["Id"];
-                          $title = $_POST["title"];
-                          $body = $_POST["body"];
-                          $date = date("Y-m-d H:i:s");
-                          
-                          $query = " UPDATE blogtable  SET Title='$title', Body='$body', TimeCreated='$date' WHERE Id = $id" ;
-                          $stmt = $conn->prepare($query);
+                              $id = $_GET["Id"];
+                              $title = $_POST["title"];
+                              $body = $_POST["body"];
+                              $date = date("Y-m-d H:i:s");
+                              
+                              $query = " UPDATE blogtable  SET Title='$title', Body='$body', TimeCreated='$date' WHERE Id = $id" ;
+                              $stmt = $conn->prepare($query);
 
-                          if($stmt->execute()){
-                              echo"<div>Record save</div>";
-                          }
-                          else{
-                              echo"<div>Unable to save</div>" ;
-                          }
+                              if($stmt->execute()){
+                                  echo"<div class='container'>
+                                  <div class='alert alert-success'>Record Saved</div>";
+                                  echo"<button class= 'btn btn-danger'><a href='Viewposts.php' style='color:white'>Back</a></button>";
+                                  echo"</div>";
+                              }
+                              else{
+                                  echo"<div class='container'>
+                                  <div class='alert alert-danger'>Record Not Saved</div>";
+                                  echo"<button class= 'btn btn-danger'><a href='Viewposts.php' style='color:white'>Back</a></button>";
+                                  echo"</div>";
+                              }
                       }
                       catch(PDOException $e){
                           echo"fail<br>";
@@ -39,6 +46,7 @@
       else if(isset($_GET["Id"])){
                     try{
                           $id = $_GET["Id"];
+
                           include("Config/connect.php");
                             $query = "SELECT Title, Body FROM blogtable WHERE Id = ? LIMIT 0,1";
                             $stmt = $conn->prepare($query);
@@ -47,19 +55,23 @@
                             $row = $stmt->fetch(PDO::FETCH_ASSOC);
                             $title = $row["Title"];
                             $body = $row["Body"];
-                            echo"<form action={$_SERVER["PHP_SELF"]}?Id={$id} method = 'post'>";
-                              echo"<p>";
-                                echo"<label>Title</label><br>";
-                                echo"<input type='text' name = 'title' value={$title}>";
-                              echo "</p>";
-                              echo"<p>";
-                                echo"<label>Body</label><br>";
-                                echo"<textarea name='body'>{$body}</textarea>";
-                              echo"</p>";
-                              echo"<p>";
-                                echo "<button>Update</button>";
-                              echo"</p>";
-                            echo"</form>";
+                            echo "<div class='container'>";
+                                echo"<h1>UPDATE POST</h1>";
+                                echo"<form action={$_SERVER["PHP_SELF"]}?Id={$id} method = 'post'>";
+                                  echo"<p class='form-group'>";
+                                    echo"<label>Title</label><br>";
+                                    echo"<input type='text' name='title' class='form-control' Value='{$title}'>";
+                                  echo "</p>";
+                                  echo"<p class='form-group'>";
+                                    echo"<label>Body</label><br>";
+                                    echo"<textarea name='body' class='form-control'>{$body}</textarea>";
+                                  echo"</p>";
+                                  echo"<p class='form-group'>";
+                                    echo "<button class='btn btn-primary'>Update</button>";
+                                    echo "<button class='btn btn-danger'style='margin-left:30px'><a href='Viewposts.php' style='color:white; margin-left'>Back</a></button>";
+                                  echo"</p>";
+                                echo"</form>";
+                            echo "</div>";
                       }
                   catch(PDOExcetion $e){
                       die('ERROR: '.$e->getMessage());

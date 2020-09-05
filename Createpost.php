@@ -1,58 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CREATE POST</title>
 </head>
 <body>
-   <div class="container">
+   <div class="container-lg">
         <div>
            <h1>
                Create Post
            </h1>
         </div>
         <?php
-            if($_POST){
-                include("Config/connect.php");
+            if( $_POST){
+                
+                    if($_POST["title"] != "" && $_POST["body"]){
+                                include("Config/connect.php");
+                            try{
+                                $query = "INSERT INTO blogtable (Title, Body, TimeCreated) VALUES (:title, :body, :timeCreated)";
+                                $stmt = $conn->prepare($query);
 
-                try{
-                    $query = "INSERT INTO blogtable (Title, Body, TimeCreated) VALUES (:title, :body, :timeCreated)";
-                    $stmt = $conn->prepare($query);
+                                $title = $_POST["title"];
+                                $body = $_POST["body"];
+                                $date = date("Y-m-d H:i:s");
 
-                    $title = $_POST["title"];
-                    $body = $_POST["body"];
-                    $date = date("Y-m-d H:i:s");
-
-                    $stmt->bindParam(':title', $title);
-                    $stmt->bindParam(':body', $body);
-                    $stmt->bindParam(':timeCreated', $date);
-                    
-                    if($stmt->execute()){
-                        echo"<div>Record save</div>";
+                                $stmt->bindParam(':title', $title);
+                                $stmt->bindParam(':body', $body);
+                                $stmt->bindParam(':timeCreated', $date);
+                                
+                                if($stmt->execute()){
+                                    echo"<div class='alert alert-success'>Successfully Saved</div>";
+                                    
+                                }
+                                else{
+                                    echo"<div>Unable to save</div>" ;
+                                }
+                            }
+                            catch(PDOException $e){
+                                echo"fail<br>";
+                                die('ERROR: '.$e->getMessage());
+                            }
                     }
-                    else{
-                        echo"<div>Unable to save</div>" ;
-                    }
-                }
-                catch(PDOException $e){
-                    echo"fail<br>";
-                    die('ERROR: '.$e->getMessage());
-
+                else{
+                     echo"<div class='alert alert-danger'>Required Field not Filled</div>";
                 }
             }
+           
+           
         ?>
         <form action= "<?php echo $_SERVER["PHP_SELF"]?>" method="post">
-                <p>
+                <p class="form-group">
                     <label for="Title" >Title</label><br>
-                    <input type="text" name="title" id="" placeholder="title">
+                    <input type="text" name="title" id="" placeholder="title" class="form-control">
                 </p>
                 <p>
                     <label for="">Body</label><br>
-                    <textarea name="body" placeholder="Enter Your Message"></textarea>
+                    <textarea name="body" class="form-control" placeholder="Enter Your Message"></textarea>
                 </p>
                 <p>
-                    <button type="submit">Submit</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button class="btn btn-danger"><a href="index.php" style="color:white">Back</a></button>
                 </p>
             </form>      
    </div>
