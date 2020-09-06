@@ -1,7 +1,5 @@
 <?php
-<<<<<<< HEAD
-    
-=======
+
         if(isset($_GET["Id"])){
           try{
                  $id = $_GET["Id"];
@@ -27,4 +25,3 @@
           $_SESSION["delete"] = "ERROR: Id not found";
           header("Location:Viewposts.php");
         };
->>>>>>> upadate
