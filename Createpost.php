@@ -1,3 +1,6 @@
+<?php
+             session_start();
+             ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,21 +17,24 @@
            </h1>
         </div>
         <?php
-            if( $_POST){
+             
+            if( ($_POST) && isset($_SESSION["name"])){
                 
-                    if($_POST["title"] != "" && $_POST["body"]){
-                                include("Config/connect.php");
+                    if($_POST["title"] != "" && $_POST["body"] ){
+                                 include("Config/connect.php");
+
                             try{
-                                $query = "INSERT INTO blogtable (Title, Body, TimeCreated) VALUES (:title, :body, :timeCreated)";
-                                $stmt = $conn->prepare($query);
 
                                 $title = $_POST["title"];
                                 $body = $_POST["body"];
+                                $blogger = $_SESSION["name"];
                                 $date = date("Y-m-d H:i:s");
+                                $id = "2";
 
-                                $stmt->bindParam(':title', $title);
-                                $stmt->bindParam(':body', $body);
-                                $stmt->bindParam(':timeCreated', $date);
+                                
+                                $query = " INSERT INTO blogs (blog_post, blog_title,  blogger, time_created) VALUES ('$body', '$title', '$blogger', '$date')";
+                                $stmt = $conn->prepare($query);
+
                                 
                                 if($stmt->execute()){
                                     echo"<div class='alert alert-success'>Successfully Saved</div>";
@@ -39,7 +45,7 @@
                                 }
                             }
                             catch(PDOException $e){
-                                echo"fail<br>";
+                                
                                 die('ERROR: '.$e->getMessage());
                             }
                     }
@@ -47,6 +53,10 @@
                      echo"<div class='alert alert-danger'>Required Field not Filled</div>";
                 }
             }
+            else if($_POST)
+               {
+                echo"<div class='alert alert-danger'>You are not permitted to create a post. Kindly Login</div>";
+               }
            
            
         ?>

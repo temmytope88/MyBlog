@@ -11,17 +11,17 @@
                   
                   $stmt->execute();
 
-                  $_SESSION["delete"] = "deleted";
-                  header("Location:Viewposts.php");
+                  $_SESSION["success"] = "Post deleted";
+                  header("Location:personalposts.php");
             }
         catch(PDOExcetion $e){
              die(
-              $_SESSION["delete"] ='ERROR: '.$e->getMessage());
-              header("Location:Viewposts.php");
+              $_SESSION["error"] ='ERROR: '.$e->getMessage());
+              header("Location:personalposts.php");
             }   
         }
 
         else{
-          $_SESSION["delete"] = "ERROR: Id not found";
-          header("Location:Viewposts.php");
+          $_SESSION["error"] = "ERROR: Id not found";
+          header("Location:personalposts.php");
         };

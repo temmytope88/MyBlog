@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,7 @@
     
    <?php
         
-       if(isset($_GET["Id"]) &&  isset($_POST["body"]) && isset($_POST["title"])){
+       if(isset($_GET["Id"]) &&  isset($_POST["body"]) && isset($_POST["title"]) && isset($_SESSION["name"])){
                      
                          include("Config/connect.php");
 
@@ -20,19 +21,19 @@
                               $body = $_POST["body"];
                               $date = date("Y-m-d H:i:s");
                               
-                              $query = " UPDATE blogtable  SET Title='$title', Body='$body', TimeCreated='$date' WHERE Id = $id" ;
+                              $query = " UPDATE blogs  SET blog_title='$title', blog_post='$body', time_created='$date' WHERE post_id = $id" ;
                               $stmt = $conn->prepare($query);
 
                               if($stmt->execute()){
                                   echo"<div class='container'>
                                   <div class='alert alert-success'>Record Saved</div>";
-                                  echo"<button class= 'btn btn-danger'><a href='Viewposts.php' style='color:white'>Back</a></button>";
+                                  echo"<button class= 'btn btn-danger'><a href='personalposts.php' style='color:white'>Back</a></button>";
                                   echo"</div>";
                               }
                               else{
                                   echo"<div class='container'>
                                   <div class='alert alert-danger'>Record Not Saved</div>";
-                                  echo"<button class= 'btn btn-danger'><a href='Viewposts.php' style='color:white'>Back</a></button>";
+                                  echo"<button class= 'btn btn-danger'><a href='personalposts.php' style='color:white'>Back</a></button>";
                                   echo"</div>";
                               }
                       }
@@ -48,13 +49,13 @@
                           $id = $_GET["Id"];
 
                           include("Config/connect.php");
-                            $query = "SELECT Title, Body FROM blogtable WHERE Id = ? LIMIT 0,1";
+                            $query = "SELECT blog_title, blog_post FROM blogs WHERE post_id = ? LIMIT 0,1";
                             $stmt = $conn->prepare($query);
                             $stmt->bindParam(1, $id);
                             $stmt->execute();
                             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                            $title = $row["Title"];
-                            $body = $row["Body"];
+                            $title = $row["blog_title"];
+                            $body = $row["blog_post"];
                             echo "<div class='container'>";
                                 echo"<h1>UPDATE POST</h1>";
                                 echo"<form action={$_SERVER["PHP_SELF"]}?Id={$id} method = 'post'>";

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <link rel="stylesheet" href="css/bootstrap.min.css">  
+  <link rel="stylesheet" href="css/style.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
@@ -14,19 +15,33 @@
         
                   
                  include("Config/connect.php");
-                  $query = "SELECT Title, Body FROM blogtable WHERE Id = ? LIMIT 0,1";
+                  $query = "SELECT blog_title, blog_post, blogger FROM blogs WHERE post_id = ? LIMIT 0,1";
                   $stmt = $conn->prepare($query);
                   $stmt->bindParam(1, $id);
                   $stmt->execute();
                   $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                  $title = $row["Title"];
-                  $body = $row["Body"];
+                  $title = $row["blog_title"];
+                  $body = $row["blog_post"];
+                  $blogger = $row["blogger"];
 
                   echo"<div class='container'>
-                       <h1>BLOG POST</h1>
+                  <div class='header'>
+                  <nav class='navbar navbar-light bg-light'>
+                      <div class='navbar-brand'>
+                          <h2>WAJAPA BLOG</h2>
+                      </div>
+                  </nav>
+                  </div>
+                    <table class='table '>
+                    <tr class='thead-dark'>
+                    <th><h3>BLOG POST</h3></th>
+                    </tr></table>
                        <h3>Title: {$title}</h3>
+                       <hr>
                        <p>{$body}</p>
-                       <button class='btn btn-danger'><a style='color:white' href='Viewposts.php'>Back</a></button>
+                       <p>Author: {$blogger}</p>
+                       <hr>
+                       <button class='btn btn-danger'><a style='color:white' href='dashboard.php'>Back</a></button>
                   </div>";
                   
                  
