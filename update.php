@@ -69,7 +69,7 @@
                                   echo"</p>";
                                   echo"<p class='form-group'>";
                                     echo "<button class='btn btn-primary'>Update</button>";
-                                    echo "<button class='btn btn-danger'style='margin-left:30px'><a href='Viewposts.php' style='color:white; margin-left'>Back</a></button>";
+                                    echo "<button class='btn btn-danger'style='margin-left:30px'><a href='personalposts.php' style='color:white; margin-left'>Back</a></button>";
                                   echo"</p>";
                                 echo"</form>";
                             echo "</div>";
