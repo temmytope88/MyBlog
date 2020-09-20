@@ -18,7 +18,7 @@
                   echo "<p class='form-group'><br>";
                        echo "<label for='email'>Email:</label><br>";
                        echo " <input type='email' name='email' class ='form-control'>";
-                        email();
+                       
                   echo "</p>" ;
 
                   echo"<p class='form-group'>";
